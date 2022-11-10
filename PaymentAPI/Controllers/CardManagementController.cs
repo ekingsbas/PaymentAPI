@@ -20,8 +20,8 @@ namespace PaymentAPI.Controllers
             _service = service;
         }
 
-        [HttpGet("/balance/{cardNumber}")]
-        public async Task<IActionResult> Balance(BaseCardDTO card)
+        [HttpGet("balance")]
+        public async Task<IActionResult> Balance([FromBody] CreditCardDTO card)
         {
             try
             {
@@ -48,14 +48,14 @@ namespace PaymentAPI.Controllers
             }
         }
 
-        [HttpPost("/create/{cardNumber}")]
-        public async Task<IActionResult> Create(BaseCardDTO card)
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody] CreditCardDTO card)
         {
             try
             {
                 var newCard = await _service.Create(card);
 
-                if (newCard == false)
+                if (newCard == null)
                     throw new Exception("Cannot create the card");
 
                 var result = new GenericResponse
@@ -76,14 +76,14 @@ namespace PaymentAPI.Controllers
             }
         }
 
-        [HttpPost("/pay/{cardNumber}")]
-        public async Task<IActionResult> Pay(PayCardDTO pay)
+        [HttpPost("pay")]
+        public async Task<IActionResult> Pay([FromBody] PayCardDTO pay)
         {
             try
             {
                 var payResult = await _service.Pay(pay);
 
-                if (payResult == false)
+                if (payResult == null)
                     throw new Exception("Cannot register the payment");
 
                 var result = new GenericResponse
